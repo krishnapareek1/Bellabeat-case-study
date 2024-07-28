@@ -1,6 +1,14 @@
 # Bellabeat-case-study
 
-# Bellabeat Case Study
+## Author
+
+Krishna Pareek
+
+## Date
+
+July 18, 2024
+
+
 
 ## Overview
 
@@ -206,6 +214,9 @@ ggplot(daily_activity, aes(x= Weekday, y = total_active_minitus)) +
 This bar chart shows the total active minutes for each weekday, highlighting that users are most active on the middle days of the week.
 ### Relation Between Sleep and Awake Time:
 
+![active minitus per week](https://github.com/user-attachments/assets/d27ebadd-3a1f-4a7d-b118-b89c620cb56c)
+
+
 # Calculate awake time in bed
 ```r
 sleep_day_new$awake_time_in_bed <- sleep_day_new$TotalTimeInBed - sleep_day_new$TotalMinutesAsleep
@@ -217,6 +228,10 @@ ggplot(sleep_day_new, aes(x=TotalMinutesAsleep, y= awake_time_in_bed)) +
   labs(x = "Total Minutes Asleep", y = "Awake Time in Bed", title = "Relation Between Sleep and Awake Time in Bed")
 ```
 This scatter plot explores the relationship between the total minutes of sleep and the time spent awake in bed.
+
+![sleep and time in bed](https://github.com/user-attachments/assets/81c63ae2-2764-4999-a432-4fa1fb661886)
+
+ as we see  spending 300 to 450 minutes (5 to 7.5 hours) in bed report better sleep quality with fewer awakenings, aligning closely with the CDC's recommendation of at least 7 hours of sleep per night;
 
 ### Hourly Steps:
 
@@ -231,6 +246,9 @@ ggplot(data=hourly_step, aes(x=Hour, y=StepTotal, fill=Hour)) +
   labs(title="Hourly Steps")
 ```
 This bar chart shows the total number of steps taken in each hour of the day.
+![hourly steps](https://github.com/user-attachments/assets/fafa4a81-aea4-4386-8061-ba7f0414de42)
+
+as we see people are more active during he time of 5 to 7 pm and take more steps
 
 ### Percentage of Active Minutes by Activity Level:
 
@@ -256,3 +274,6 @@ pie3D(activity_percent, labels=paste0(activity_percent, "%"),
 legend("topright", legend_labels, cex=0.9,
        fill=c("darkred", "purple", "yellow", "green"), x.intersp = 1, y.intersp = 1)
 ```
+![pie](https://github.com/user-attachments/assets/c6e2af83-4012-44c6-b268-4efc283f87cf)
+
+the pie chart clearly show that 81.3% time people stay sedentary and spent  only 2.8% time in activity.
