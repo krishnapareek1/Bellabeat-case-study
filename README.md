@@ -277,3 +277,54 @@ legend("topright", legend_labels, cex=0.9,
 ![pie](https://github.com/user-attachments/assets/c6e2af83-4012-44c6-b268-4efc283f87cf)
 
 the pie chart clearly show that 81.3% time people stay sedentary and spent  only 2.8% time in activity.
+
+## Analysis of Smart Device Usage Trends
+#### Key Observations
+### Sedentary Behavior: 
+On average, users spend 16.5 hours per day in a sedentary state.
+### Physical Activity:
+Users walk approximately 5.5 kilometers daily, which is considered moderately active. The CDC recommends aiming for 10,000 steps per day, roughly equivalent to 8 kilometers.
+### Sleep Duration:
+The average sleep duration is about 7 hours per night, within the recommended range of 7-9 hours.
+### Sleep Quality:
+Individuals who sleep for 7-9 hours tend to spend less time awake in bed.
+Impact of Sedentarism: A lack of physical activity during the day can lead to increased stress and anxiety, making it more difficult to fall asleep. Additionally, a sedentary lifestyle can reduce overall energy expenditure, contributing to fatigue and daytime sleepiness.
+### BMI:
+The average BMI is 25.19, which is within a healthy range according to CDC standards.
+### Activity Patterns: 
+Tuesday is identified as the most active day of the week.
+Peak Activity Time: Users are most active in the evening, particularly between 5 and 7 PM.
+How Trends Apply to Bellabeat Customers
+### Active Lifestyle: 
+Users spend a significant amount of time sedentary, highlighting the need for encouragement to adopt a more active lifestyle.
+### Weight Management:  
+With minimal manual weight tracking by users, there's an opportunity to integrate more effective weight management tools.
+### Sleep Quality: 
+Improving sleep tracking and quality is crucial, especially since users who sleep 7-9 hours typically experience less time awake in bed.
+Influencing Bellabeat’s Marketing Strategy
+###Promote Active Lifestyle:
+
+### Goal Setting and Reminders: 
+Introduce or emphasize features that set daily goals, such as aiming for 10,000 steps, and provide reminders to help users achieve these goals.
+### Gamification:
+Incorporate challenges, rewards, and other gamification elements to motivate users to remain active and take breaks from sedentary behavior.
+### Personalized Coaching: Offer personalized feedback and recommendations to help users gradually improve their fitness levels.
+Enhance Weight Management Features:
+
+### Food Diary Integration: 
+Partner with food tracking apps or create an in-app food diary to provide a comprehensive view of calorie intake and balance it with physical activity.
+### Personalized Recommendations: 
+Suggest meal plans and exercises based on users’ dietary preferences and weight loss goals.
+### Community Support: 
+Add social features such as virtual challenges or support groups to foster community and motivation.
+### Additional Resources: 
+Provide access to nutrition guides, certified dietitians, or personal trainers for extra support and guidance.
+Improve Sleep Tracking:
+
+### Advanced Sleep Tracking: 
+Develop features that not only track sleep patterns but also offer actionable insights to enhance sleep quality.
+Reminders and Recommendations: Provide reminders to help users maintain a consistent sleep schedule and offer personalized tips for improving sleep, such as adjusting bedtime routines or reducing caffeine intake.
+Leverage Specific Days:
+
+Tuesday Workout Recommendations: Offer targeted workout plans and challenges for Tuesdays to boost engagement and adherence to fitness routines.
+Saturday Sleep Tips: Provide tips on maintaining good sleep habits throughout the week, leveraging the fact that users tend to get more sleep on Saturdays.
