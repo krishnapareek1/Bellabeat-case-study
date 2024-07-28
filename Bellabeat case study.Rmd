@@ -1,0 +1,233 @@
+---
+title: "Bellabeat case study"
+author: "Krishna pareek"
+date: "2024-07-18"
+output: html_document 
+---
+### install and load packages 
+#### tidyverse = wrangle the data
+#### skimr     = for summary
+#### here      = manage file path   
+#### janitor   =simlify data cleaning
+#### ggplot2   = for visualization
+#### lubridate = for date and time
+#### dplyr     = for cleaning
+#### sqldf     = sql function
+#### plotrix   = 3d pie chart
+```{r}
+chooseCRANmirror(ind = 1)
+```
+
+```{r}
+#setting the environment for .R
+install.packages("tidyverse") 
+install.packages("skimr")
+install.packages("here")
+install.packages("janitor")
+install.packages("ggplot2") 
+install.packages("lubridate")
+install.packages("dplyr")             
+install.packages("sqldf")
+install.packages("plotrix")
+
+library(tidyverse)
+library(skimr)
+library(here)
+library(janitor)
+library(ggplot2)  
+library(lubridate)
+library(dplyr)              
+library(sqldf)
+library(plotrix)
+```
+
+### get and set the data path for importing required files
+
+```{r}
+getwd()
+setwd("C:/Users/Hp-D/Desktop/bellabeat case study/mturkfitbit_export_4.12.16-5.12.16/Fitabase Data 4.12.16-5.12.16")
+daily_activity <- read.csv("dailyActivity_merged.csv")
+sleep_day <- read.csv("sleepDay_merged.csv")
+weight <- read.csv("weightLogInfo_merged.csv")
+hourly_step <- read.csv("hourlySteps_merged.csv")
+```
+
+#### take a closer look to the data clean it remove the duplicate and
+#### NA value.
+```{r}
+head(daily_activity)
+head(sleep_day)
+head(weight)
+head(hourly_step)
+```
+
+
+```{r}
+sum(is.na(daily_activity))
+sum(is.na(sleep_day))
+sum(is.na(weight))
+
+sum(duplicated(daily_activity))
+sum(duplicated(sleep_day))
+sum(duplicated(weight))
+sum(duplicated(hourly_step))
+```
+####here NA is "fat" at different date so we leave it. 
+#### and remove the duplicate entries
+
+
+```{r}
+weight_info <- weight %>% select( Id , Date , WeightKg , WeightPounds , BMI , IsManualReport, LogId)
+head(weight_info)
+
+sleep_day <- sleep_day[!duplicated(sleep_day), ]
+sum(duplicated(sleep_day))
+```
+
+### seprate the date and time 
+
+```{r}
+sleep_day_new <- sleep_day %>% separate(SleepDay, c("date", "time"), " ")
+head(sleep_day_new)
+
+weight_info_new <- weight_info %>% separate(Date, c("date", "time"), " ")
+head(weight_info_new)
+
+```
+
+### find the unique row
+
+```{r}
+n_distinct(daily_activity$Id)
+n_distinct(sleep_day_new$Id)
+n_distinct(weight_info_new$Id)
+n_distinct(hourly_step$Id)
+```
+#### by this we know that here is 33 unique id in Daily_activity , 24 in sleep_day_new & 8 in weight_info_new
+
+### change the data formate.
+```{r}
+daily_activity$ActivityDate = as.Date(daily_activity$ActivityDate, "%m/%d/%Y") 
+glimpse(daily_activity)
+
+sleep_day_new$date = as.Date(sleep_day_new$date, "%m/%d/%y")
+glimpse(sleep_day_new)
+
+weight_info_new$date = as.Date(weight_info_new$date, "%m/%d/%y")
+glimpse(weight_info_new)
+```
+
+###find out the centrel trend of entire dataset of
+#### daily_activity, sleep_day_new, weight_info_new
+```{r}
+daily_activity %>% 
+  select(TotalSteps, TotalDistance, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes,
+         Calories) %>% summary()
+  
+sleep_day_new %>% select(TotalSleepRecords, TotalMinutesAsleep, TotalTimeInBed) %>% summary()
+
+weight_info_new %>% select(WeightKg, WeightPounds, BMI) %>% summary()
+```
+
+### add a new column
+#### for weekday
+
+```{r}
+daily_activity <- daily_activity %>% mutate( Weekday = weekdays(as.Date(ActivityDate, "%m/%d/%Y")))
+```
+
+### merge data
+```{r}
+merge1 <- merge(sleep_day_new, weight_info_new, by = "Id", all = TRUE )
+merge_data <- merge(merge1, daily_activity, by = "Id", all = TRUE)
+```
+```{r}
+str(merge_data)
+```
+
+### set order
+```{r}
+merge_data$Weekday <- factor(merge_data$Weekday, levels =  c("Monday", 
+                       "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
+
+ordered_data <- merge_data[order(merge_data$Weekday), ]
+
+head(ordered_data)
+```
+
+### check for NA and duplicate in merge data
+```{r}
+sum(is.na(merge_data))
+sum(duplicated(merge_data))
+n_distinct(merge_data$Id)
+```
+
+### creat visual for total active minute and weekday
+```{r}
+daily_activity$total_active_minitus <- daily_activity$VeryActiveMinutes+daily_activity$FairlyActiveMinutes+daily_activity$LightlyActiveMinutes
+
+
+ggplot(daily_activity, aes(x= Weekday, y = total_active_minitus)) +
+  geom_bar(stat = "identity", fill = "green") +
+  labs(x = "Weekday", y = "Total Active Minutes", title = "Total Active Minutes per Weekday")
+
+```
+
+###as we see people are mostly active on the mid day of the week
+
+### Time Spent Awake vs. Total Sleep Duration in Bed
+```{r}
+sleep_day_new$awake_time_in_bed <- sleep_day_new$TotalTimeInBed - sleep_day_new$TotalMinutesAsleep
+
+ggplot(sleep_day_new, aes(x=TotalMinutesAsleep, y= awake_time_in_bed))+
+  geom_point(color = "blue") +
+  geom_smooth(color = "orange")+
+  labs(x = "time as sleep", y = "awaken time in bed", title = "relation between sleep and awaken time in bed")
+
+```
+
+### hourly steps
+```{r}
+head(hourly_step)
+n_distinct(hourly_step$Id) #33 users
+
+hourly_step$ActivityHour=as.POSIXct(hourly_step$ActivityHour,format="%m/%d/%Y %I:%M:%S %p")
+hourly_step$Hour <-  format(hourly_step$ActivityHour,format= "%H")
+head(hourly_step)
+
+ggplot(data=hourly_step, aes(x=Hour, y=StepTotal, fill=Hour))+
+  geom_bar(stat="identity")+
+  labs(title="Hourly Steps")
+```
+
+### from  5 to 7 the people or the users are more active
+
+
+####take the sum of (sedentary, lightly, fairly, active ) minitus, and make a variable name -> active_minitus
+```{r}
+Sedentary <- sum(daily_activity$SedentaryMinutes)
+Lightly <- sum(daily_activity $LightlyActiveMinutes)
+Fairly <- sum(daily_activity $FairlyActiveMinutes)
+Active <- sum(daily_activity $VeryActiveMinutes)
+
+activity_minutes <- c(Sedentary,Lightly, Fairly, Active)
+```
+
+#### calculate the percentage of active_minitus , for each level of activity
+```{r}
+activity_percent <- round(activity_minutes/sum(activity_minutes)*100,1)
+```
+
+###create a pie chart showing the percentage of active minutes for each level of activity
+```{r}
+par(bg= "white")
+legend_labels <- c("Sedentary","Lightly Active", "Fairly Active","Very Active")
+pie3D(activity_percent, labels=paste0(activity_percent,"%"),
+      main="Percentage of Active Minutes by Activity Level", 
+      col=c("darkred","purple", "yellow","green"),
+      border="lightgrey", labelcex = 0.7)
+legend("topright", legend_labels, cex=0.9,
+       fill=c("darkred","purple", "yellow","green"),x.intersp = 1, y.intersp = 1)
+```
+
+
